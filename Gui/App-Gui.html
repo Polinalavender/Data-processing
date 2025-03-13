@@ -3,13 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>API Fetch</title>
+    <title>Netflix Style Login</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Testing </h1>
-    <button onclick="fetchData()">Get Data</button>
-    <div id="output">Click the button to fetch data.</div>
+    <div class="login-container">
+        <h1>Sign In</h1>
+        <form id="loginForm">
+            <input type="email" id="email" placeholder="Email or phone number" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="submit">Sign In</button>
+            <p id="error-message"></p>
+        </form>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>

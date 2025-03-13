@@ -1,14 +1,14 @@
-function fetchData() {
-    fetch('https://jsonplaceholder.typicode.com/posts/1')
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('output').innerHTML = `
-                <h3>${data.title}</h3>
-                <p>${data.body}</p>
-            `;
-        })
-        .catch(error => {
-            document.getElementById('output').innerText = 'Error fetching data';
-            console.error('Error:', error);
-        });
-}
+document.getElementById('loginForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const errorMessage = document.getElementById('error-message');
+
+    if (email === "user@example.com" && password === "password123") {
+        alert("Login Successful!");
+        window.location.href = "home.html"; // Redirect to another page
+    } else {
+        errorMessage.textContent = "Invalid email or password.";
+    }
+});
