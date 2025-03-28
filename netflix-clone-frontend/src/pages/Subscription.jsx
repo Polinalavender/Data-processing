@@ -12,6 +12,7 @@ const Subscription = () => {
   const user = JSON.parse(localStorage.getItem("user"));
 
   const planPrices = {
+    FREE: 0.0,
     SD: 7.99,
     HD: 10.99,
     UHD: 13.99,
@@ -45,8 +46,14 @@ const Subscription = () => {
     if (!selectedPlan || !user?.id) return;
 
     const today = new Date();
-    const oneMonthLater = new Date(today);
-    oneMonthLater.setMonth(today.getMonth() + 1);
+    const endDate = new Date(today);
+
+    // Set duration based on plan
+    if (selectedPlan === "FREE") {
+      endDate.setDate(today.getDate() + 7); // 7 days for free plan
+    } else {
+      endDate.setMonth(today.getMonth() + 1); // 1 month for paid plans
+    }
 
     try {
       const response = await axios.post(`${API_BASE_URL}/api/subscription`, {
@@ -54,7 +61,7 @@ const Subscription = () => {
         plan: selectedPlan,
         price: planPrices[selectedPlan],
         startDate: today.toISOString(),
-        endDate: oneMonthLater.toISOString(),
+        endDate: endDate.toISOString(),
       });
 
       console.log("Subscribed:", response.data);
@@ -73,6 +80,12 @@ const Subscription = () => {
       <div className="bg-gray-800 p-8 rounded-lg shadow-lg">
         <h2 className="text-2xl font-bold mb-6">Choose a Subscription Plan</h2>
         <div className="space-y-4">
+          <button
+            className={`w-full p-3 rounded ${selectedPlan === "FREE" ? "bg-red-600" : "bg-gray-700"}`}
+            onClick={() => setSelectedPlan("FREE")}
+          >
+            Free 7 Days Trial - €0.00
+          </button>
           <button
             className={`w-full p-3 rounded ${selectedPlan === "SD" ? "bg-red-600" : "bg-gray-700"}`}
             onClick={() => setSelectedPlan("SD")}
@@ -93,11 +106,11 @@ const Subscription = () => {
           </button>
         </div>
         <button
-          className="mt-6 w-full bg-red-600 p-2 rounded hover:bg-red-700"
+          className="mt-6 w-full bg-red-600 p-2 rounded hover:bg-red-700 disabled:opacity-50"
           onClick={handleSubscription}
           disabled={!selectedPlan}
         >
-          Subscribe
+          {selectedPlan === "FREE" ? "Start Free Trial" : "Subscribe"}
         </button>
       </div>
     </div>

@@ -7,6 +7,8 @@ import Watch from "./pages/Watch";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ProtectedRoute from "./components/ProtectedRoute";
+import ProfileManagement from "./pages/ProfileManagement";
+import Account from "./pages/Account";
 
 const App = () => {
   return (
@@ -39,6 +41,22 @@ const App = () => {
         />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route
+          path="/profile-management"
+          element={
+            <ProtectedRoute>
+              <ProfileManagement />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/account"
+          element={
+            <ProtectedRoute>
+              <Account />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
       <Footer />
     </Router>

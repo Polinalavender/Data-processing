@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-const API_KEY = "1be2070643bf5b4ee4e702855316cbdb"; // Using the same API key from your Home component
+const API_KEY = "1be2070643bf5b4ee4e702855316cbdb";
 
 const Watch = () => {
   const { id } = useParams();
