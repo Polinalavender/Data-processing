@@ -44,7 +44,8 @@ export const initializeDatabase = async (): Promise<void> => {
     Subscription.belongsTo(User, { foreignKey: "userId", as: "user" });
 
     await sequelize.authenticate();
-    await sequelize.sync({ force: true });
+    // await sequelize.sync();
+    await sequelize.sync({ alter: true });
 
     console.log(`✅ Database connected and synchronized.`);
   } catch (error) {

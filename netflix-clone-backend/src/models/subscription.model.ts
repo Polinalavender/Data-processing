@@ -6,7 +6,7 @@ class Subscription
   implements ISubscriptionAttributes {
   declare subscriptionId: number;
   declare userId: number;
-  declare plan: "SD" | "HD" | "UHD";
+  declare plan: "FREE" | "SD" | "HD" | "UHD";
   declare startDate: Date;
   declare endDate: Date;
   declare price: number;
@@ -27,7 +27,7 @@ export const initSubscriptionModel = (sequelize: Sequelize): void => {
         allowNull: false,
       },
       plan: {
-        type: DataTypes.ENUM("SD", "HD", "UHD"),
+        type: DataTypes.ENUM("FREE", "SD", "HD", "UHD"),
         allowNull: false,
       },
       startDate: {

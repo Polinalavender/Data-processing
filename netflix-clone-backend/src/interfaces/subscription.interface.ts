@@ -1,7 +1,7 @@
 export interface ISubscriptionAttributes {
   subscriptionId: number;
   userId: number;
-  plan: "SD" | "HD" | "UHD";
+  plan: "FREE" | "SD" | "HD" | "UHD";
   startDate: Date;
   endDate: Date;
   price: number;

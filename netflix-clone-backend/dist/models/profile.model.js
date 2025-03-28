@@ -31,6 +31,10 @@ const initProfileModel = (sequelizeInstance) => {
             type: sequelize_1.DataTypes.STRING,
             allowNull: true,
         },
+        photoUrl: {
+            type: sequelize_1.DataTypes.STRING,
+            allowNull: false,
+        },
     }, {
         sequelize: sequelizeInstance,
         tableName: "profiles",

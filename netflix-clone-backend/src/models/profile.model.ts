@@ -9,6 +9,7 @@ class Profile extends Model<IProfileAttributes, IProfileCreationAttributes> impl
   declare age: number;
   declare language: string;
   declare preferences: string;
+  declare photoUrl: string;
 }
 
 export const initProfileModel = (sequelizeInstance: any): void => {
@@ -39,6 +40,10 @@ export const initProfileModel = (sequelizeInstance: any): void => {
         type: DataTypes.STRING,
         allowNull: true,
       },
+      photoUrl: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },      
     },
     {
       sequelize: sequelizeInstance,

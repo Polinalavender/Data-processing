@@ -19,6 +19,8 @@ const app = (0, express_1.default)();
 const corsOptions = {
     origin: ["https://netflix-clone.onrender.com", "http://localhost:5173"],
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
 };
 app.use((0, cors_1.default)(corsOptions));
 //For Content-Type of application/json

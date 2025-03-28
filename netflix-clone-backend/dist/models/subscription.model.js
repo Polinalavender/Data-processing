@@ -16,7 +16,7 @@ const initSubscriptionModel = (sequelize) => {
             allowNull: false,
         },
         plan: {
-            type: sequelize_1.DataTypes.ENUM("SD", "HD", "UHD"),
+            type: sequelize_1.DataTypes.ENUM("FREE", "SD", "HD", "UHD"),
             allowNull: false,
         },
         startDate: {

@@ -5,9 +5,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.unsubscribe = exports.getSubscription = exports.subscribe = void 0;
 const subscription_model_1 = __importDefault(require("../models/subscription.model"));
+const user_model_1 = __importDefault(require("../models/user.model"));
 const subscribe = async (req, res, next) => {
     try {
-        const { userId, plan, startDate, endDate, price } = req.body;
+        let { userId, plan, startDate, endDate, price } = req.body;
         console.log("Incoming subscription data:", {
             userId,
             plan,
@@ -15,18 +16,56 @@ const subscribe = async (req, res, next) => {
             endDate,
             price,
         });
+        const parsedStartDate = new Date(startDate);
+        if (plan === "FREE") {
+            const enforcedEndDate = new Date(parsedStartDate);
+            enforcedEndDate.setDate(enforcedEndDate.getDate() + 7);
+            endDate = enforcedEndDate;
+            price = 0.0;
+        }
         const existing = await subscription_model_1.default.findOne({ where: { userId } });
         if (existing) {
-            res.status(400).json({ message: "Already subscribed" });
-            return;
+            if (existing.plan === "FREE" && plan !== "FREE") {
+                await existing.destroy();
+            }
+            else {
+                res.status(400).json({ message: "Already subscribed" });
+                return;
+            }
         }
         const subscription = await subscription_model_1.default.create({
             userId,
             plan,
-            startDate,
+            startDate: parsedStartDate,
             endDate,
             price,
         });
+        // ===== Referral Logic Starts =====
+        const user = await user_model_1.default.findByPk(userId);
+        if (user &&
+            user.referredBy &&
+            !user.hasReferralBonus &&
+            plan !== "FREE") {
+            const referrer = await user_model_1.default.findByPk(user.referredBy);
+            if (referrer && !referrer.hasReferralBonus) {
+                const referrerSubscription = await subscription_model_1.default.findOne({
+                    where: { userId: referrer.id },
+                });
+                if (referrerSubscription && referrerSubscription.plan !== "FREE") {
+                    // Apply €2 discount
+                    await subscription.update({
+                        price: Math.max(0, subscription.price - 2),
+                    });
+                    await referrerSubscription.update({
+                        price: Math.max(0, referrerSubscription.price - 2),
+                    });
+                    await user.update({ hasReferralBonus: true });
+                    await referrer.update({ hasReferralBonus: true });
+                    console.log(`Referral bonus applied: ${user.email} & ${referrer.email}`);
+                }
+            }
+        }
+        // ===== Referral Logic Ends =====
         res.status(201).json(subscription);
     }
     catch (error) {

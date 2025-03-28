@@ -70,7 +70,8 @@ const initializeDatabase = async () => {
         user_model_1.default.hasOne(subscription_model_1.default, { foreignKey: "userId", as: "subscription", onDelete: "CASCADE" });
         subscription_model_1.default.belongsTo(user_model_1.default, { foreignKey: "userId", as: "user" });
         await exports.sequelize.authenticate();
-        await exports.sequelize.sync({ force: true });
+        // await sequelize.sync();
+        await exports.sequelize.sync({ alter: true });
         console.log(`✅ Database connected and synchronized.`);
     }
     catch (error) {

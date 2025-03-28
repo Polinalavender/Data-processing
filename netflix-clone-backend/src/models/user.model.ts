@@ -14,23 +14,31 @@ class User extends Model<IUserAttributes, IUserCreationAttributes> implements IU
   declare accountActivation: boolean;
   declare status: "active" | "inactive";
   declare refreshToken: string | null;
+  declare referredBy: number | null;
+  declare hasReferralBonus: boolean;
+  declare failedAttempts: number;  // Track failed login attempts
+  declare lockUntil: Date | null;  // Store lock time if account is blocked
 
+  // Generate JWT token
   generateToken(): string {
     return jwt.sign({ id: this.id, email: this.email }, process.env.JWT_SECRET || "JWT_SECRET", {
       expiresIn: "24h",
     });
   }
 
+  // Generate refresh token
   generateRefreshToken(): string {
     return jwt.sign({ id: this.id, email: this.email }, process.env.REFRESH_TOKEN_SECRET || "REFRESH_SECRET", {
       expiresIn: "7d",
     });
   }
 
+  // Validate password
   async validatePassword(password: string): Promise<boolean> {
     return bcryptjs.compare(password, this.password);
   }
 
+  // Convert the model to a plain JSON object (without password and refresh token)
   toJSON() {
     const values = { ...this.get() };
     delete values.password;
@@ -86,6 +94,23 @@ export const initUserModel = (sequelize: Sequelize): void => {
         type: DataTypes.STRING,
         allowNull: true,
       },
+      referredBy: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      hasReferralBonus: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+        allowNull: false,
+      },
+      failedAttempts: {  // Track the number of failed login attempts
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+      },
+      lockUntil: {  // Store the date until which the account is locked
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
     },
     {
       sequelize,
@@ -96,6 +121,14 @@ export const initUserModel = (sequelize: Sequelize): void => {
   // Hash password before saving
   User.beforeCreate(async (user) => {
     user.password = await bcryptjs.hash(user.password, 10);
+  });
+
+  // Reset failed login attempts and unlock user account after successful login
+  User.beforeUpdate(async (user) => {
+    if (user.failedAttempts > 3 && !user.lockUntil) {
+      // Lock the account for 15 minutes if more than 3 failed attempts
+      user.lockUntil = new Date(new Date().getTime() + 15 * 60000);  // 15 minutes lock
+    }
   });
 };
 

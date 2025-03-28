@@ -14,10 +14,10 @@ export const databaseConfig = {
     database: process.env.DB_NAME || "netflix-clone",
     dialect: "postgres" as Dialect,
     dialectOptions: {
-      // ssl: {
-      //   require: true,
-      //   rejectUnauthorized: false,
-      // },
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
     },
   },
 };

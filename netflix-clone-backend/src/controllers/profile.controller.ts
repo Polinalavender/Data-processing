@@ -3,7 +3,6 @@ import Profile from "../models/profile.model";
 import User from "../models/user.model";
 import { IProfileCreationAttributes } from "../interfaces/profile.interface";
 
-// Create a profile (limit to 4 per user)
 export const createProfile = async (
   req: Request,
   res: Response,
@@ -16,6 +15,7 @@ export const createProfile = async (
       age,
       language,
       preferences,
+      photoUrl
     }: IProfileCreationAttributes = req.body;
 
     const count = await Profile.count({ where: { userId } });
@@ -32,40 +32,51 @@ export const createProfile = async (
       age,
       language: language || 'en',
       preferences: preferences || '',
+      photoUrl: photoUrl || '',
     });
 
     res.status(201).json(profile);
   } catch (error) {
+    console.error('Create Profile Error:', error);
     next(error);
   }
 };
 
-// Get all profiles for a user
 export const getProfilesByUser = async (
   req: Request<{ userId: string }>,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
   try {
+    const userId = parseInt(req.params.userId, 10);
+
     const profiles = await Profile.findAll({
-      where: { userId: req.params.userId },
+      where: { userId },
+      raw: true,
     });
+
+    if (profiles.length === 0) {
+      res.status(404).json({ message: "No profiles found for this user" });
+      return;
+    }
 
     res.status(200).json(profiles);
   } catch (error) {
+    console.error('Get Profiles Error:', error);
     next(error);
   }
 };
 
-// Delete a profile
 export const deleteProfile = async (
   req: Request<{ profileId: string }>,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
   try {
+    const profileId = parseInt(req.params.profileId, 10);
+    
     const deleted = await Profile.destroy({
-      where: { profileId: req.params.profileId },
+      where: { profileId },
     });
 
     if (!deleted) {
@@ -75,6 +86,38 @@ export const deleteProfile = async (
 
     res.status(200).json({ message: "Profile deleted" });
   } catch (error) {
+    console.error('Delete Profile Error:', error);
+    next(error);
+  }
+};
+
+export const updateProfile = async (
+  req: Request<{ profileId: string }>,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const profileId = parseInt(req.params.profileId, 10);
+    const { name, age, language, preferences, photoUrl } = req.body;
+
+    const profile = await Profile.findByPk(profileId);
+
+    if (!profile) {
+      res.status(404).json({ message: "Profile not found" });
+      return;
+    }
+
+    const updatedProfile = await profile.update({
+      name,
+      age,
+      language: language || 'en',
+      preferences: preferences || '',
+      photoUrl: photoUrl || profile.photoUrl
+    });
+
+    res.status(200).json(updatedProfile);
+  } catch (error) {
+    console.error('Update Profile Error:', error);
     next(error);
   }
 };

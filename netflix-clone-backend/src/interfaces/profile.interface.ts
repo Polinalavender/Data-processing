@@ -5,6 +5,7 @@ export interface IProfileAttributes {
   age: number;
   language: string;
   preferences: string;
+  photoUrl: string;
 }
 
 export interface IProfileCreationAttributes {
@@ -13,4 +14,5 @@ export interface IProfileCreationAttributes {
   age: number;
   language?: string;
   preferences?: string;
+  photoUrl: string;
 }

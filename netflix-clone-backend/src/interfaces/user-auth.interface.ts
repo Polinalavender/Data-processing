@@ -9,8 +9,10 @@ export interface IRegisterRequestBody {
   role?: string;
   language?: string;
   accountActivation?: boolean;
-  status?: string;
+  status?: "active" | "inactive";
+  referredBy?: number | null;
 }
+
 
 export interface ILoginRequestBody {
   email: string;

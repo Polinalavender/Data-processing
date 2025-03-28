@@ -1,4 +1,4 @@
-import express from "express";
+import express from "express"; 
 import cors from "cors";
 import cookieparser from "cookie-parser";
 import dotenv from "dotenv";
@@ -17,9 +17,13 @@ const app = express();
 const corsOptions = {
   origin: ["https://netflix-clone.onrender.com", "http://localhost:5173"],
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 };
 
+
 app.use(cors(corsOptions));
+
 //For Content-Type of application/json
 app.use(express.json());
 //For Content-Type of application/x-www-form-urlencoded
