@@ -12,4 +12,3 @@ router.get("/:userId", profile_controller_1.getProfilesByUser); // Get profiles 
 router.delete("/:profileId", profile_controller_1.deleteProfile); // Delete profile
 router.put("/:profileId", profile_controller_1.updateProfile); // Update profile (fixed route)
 exports.profileRouter = router;
-//# sourceMappingURL=profile.route.js.map

@@ -11,4 +11,3 @@ router.post("/", film_controller_1.createFilm); // Add a new film
 router.get("/", film_controller_1.getAllFilms); // List all films
 router.get("/:filmId", film_controller_1.getFilmById); // Get a film by ID
 exports.filmRouter = router;
-//# sourceMappingURL=film.route.js.map

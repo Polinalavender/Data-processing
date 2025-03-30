@@ -9,4 +9,3 @@ const auth_controller_1 = require("../controllers/auth.controller");
 const router = express_1.default.Router();
 router.post("/refresh-token", auth_controller_1.refreshToken);
 exports.authRouter = router;
-//# sourceMappingURL=auth.route.js.map
