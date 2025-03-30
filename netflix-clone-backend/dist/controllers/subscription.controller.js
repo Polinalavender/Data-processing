@@ -106,4 +106,3 @@ const unsubscribe = async (req, res, next) => {
     }
 };
 exports.unsubscribe = unsubscribe;
-//# sourceMappingURL=subscription.controller.js.map
