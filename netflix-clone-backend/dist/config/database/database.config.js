@@ -24,4 +24,3 @@ exports.databaseConfig = {
         },
     },
 };
-//# sourceMappingURL=database.config.js.map
