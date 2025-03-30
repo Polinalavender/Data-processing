@@ -42,4 +42,3 @@ const removeFromWatchlist = async (req, res, next) => {
     }
 };
 exports.removeFromWatchlist = removeFromWatchlist;
-//# sourceMappingURL=watchlist.controller.js.map
