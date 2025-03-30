@@ -160,4 +160,3 @@ const updateBonusByUserId = async (req, res, next) => {
     }
 };
 exports.updateBonusByUserId = updateBonusByUserId;
-//# sourceMappingURL=user.controller.js.map

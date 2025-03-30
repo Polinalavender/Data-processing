@@ -42,4 +42,3 @@ const initProfileModel = (sequelizeInstance) => {
 };
 exports.initProfileModel = initProfileModel;
 exports.default = Profile;
-//# sourceMappingURL=profile.model.js.map

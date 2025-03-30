@@ -37,4 +37,3 @@ const getHistoryByProfile = async (req, res, next) => {
     }
 };
 exports.getHistoryByProfile = getHistoryByProfile;
-//# sourceMappingURL=watchhistory.controller.js.map

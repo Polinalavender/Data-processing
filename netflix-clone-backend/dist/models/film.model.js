@@ -54,4 +54,3 @@ const initFilmModel = (sequelize) => {
 };
 exports.initFilmModel = initFilmModel;
 exports.default = Film;
-//# sourceMappingURL=film.model.js.map

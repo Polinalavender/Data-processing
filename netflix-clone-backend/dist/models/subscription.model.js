@@ -39,4 +39,3 @@ const initSubscriptionModel = (sequelize) => {
 };
 exports.initSubscriptionModel = initSubscriptionModel;
 exports.default = Subscription;
-//# sourceMappingURL=subscription.model.js.map
