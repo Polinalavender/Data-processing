@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-const API_KEY = "1be2070643bf5b4ee4e702855316cbdb";
+const API_KEY = "7529868675ff4fe4a423aae8ba78f36e";
 
 const Home = () => {
   const [trendingContent, setTrendingContent] = useState([]);
@@ -145,7 +145,7 @@ const Home = () => {
                 scrollbarWidth: "none" /* Firefox */,
               }}
             >
-              {/* Additional CSS for Webkit browsers (Chrome, Safari, Opera) */}
+              {/* Additional CSS for Webkit browsers*/}
               <style jsx>{`
                 div.no-scrollbar::-webkit-scrollbar {
                   display: none;
