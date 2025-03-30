@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-const API_KEY = "1be2070643bf5b4ee4e702855316cbdb";
+const API_KEY = "7529868675ff4fe4a423aae8ba78f36e";
 
 const Watch = () => {
   const { id } = useParams();
@@ -105,7 +105,6 @@ const Watch = () => {
                 <iframe
                   src={videoUrl}
                   title={movieDetails?.title || movieDetails?.name}
-                  frameBorder="0"
                   allowFullScreen
                   className="w-full h-full"
                 ></iframe>
