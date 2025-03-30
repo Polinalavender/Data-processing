@@ -11,4 +11,3 @@ router.post("/", watchlist_controller_1.addToWatchlist); // Add film to watchlis
 router.get("/:profileId", watchlist_controller_1.getWatchlist); // Get watchlist by profile
 router.delete("/:watchlistId", watchlist_controller_1.removeFromWatchlist); // Remove item
 exports.watchlistRouter = router;
-//# sourceMappingURL=watchlist.route.js.map

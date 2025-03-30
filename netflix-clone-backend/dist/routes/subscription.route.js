@@ -11,4 +11,3 @@ router.post("/", subscription_controller_1.subscribe);
 router.get("/:userId", subscription_controller_1.getSubscription);
 router.delete("/:userId", subscription_controller_1.unsubscribe);
 exports.subscriptionRouter = router;
-//# sourceMappingURL=subscription.route.js.map

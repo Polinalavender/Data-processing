@@ -10,4 +10,3 @@ const router = express_1.default.Router();
 router.post("/", watchhistory_controller_1.trackWatch); // Track watch
 router.get("/profile/:profileId", watchhistory_controller_1.getHistoryByProfile); // Get history by profile
 exports.watchHistoryRouter = router;
-//# sourceMappingURL=watchhistory.route.js.map
