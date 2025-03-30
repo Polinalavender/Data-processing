@@ -42,4 +42,3 @@ const getFilmById = async (req, res, next) => {
     }
 };
 exports.getFilmById = getFilmById;
-//# sourceMappingURL=film.controller.js.map
