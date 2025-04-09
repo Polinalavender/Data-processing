@@ -78,5 +78,4 @@ const initializeDatabase = async () => {
         console.error("❌ Database connection failed:", error);
     }
 };
-exports.initializeDatabase = initializeDatabase;
-//# sourceMappingURL=initialize-database.config.js.map
+exports.initializeDatabase = initializeDatabase;//# sourceMappingURL=initialize-database.config.js.map
