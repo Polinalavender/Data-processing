@@ -1,8 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import Film from "../models/film.model";
 
-// Add new film
-export const createFilm = async (
+export const createFilm = async ( // Add new film
   req: Request,
   res: Response,
   next: NextFunction
@@ -15,8 +14,7 @@ export const createFilm = async (
   }
 };
 
-// Get all films
-export const getAllFilms = async (
+export const getAllFilms = async ( 
   _req: Request,
   res: Response,
   next: NextFunction
@@ -29,8 +27,7 @@ export const getAllFilms = async (
   }
 };
 
-// Get single film
-export const getFilmById = async (
+export const getFilmById = async ( // Get single film
   req: Request,
   res: Response,
   next: NextFunction
