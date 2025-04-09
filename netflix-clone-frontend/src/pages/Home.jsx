@@ -134,11 +134,10 @@ const Home = () => {
               className="flex space-x-4 overflow-x-auto pb-4 scroll-smooth no-scrollbar"
               ref={containerRef}
               style={{
-                msOverflowStyle: "none" /* IE and Edge */,
-                scrollbarWidth: "none" /* Firefox */,
+                msOverflowStyle: "none",
+                scrollbarWidth: "none",
               }}
             >
-              {/* Additional CSS for Webkit browsers*/}
               <style jsx>{`
                 div.no-scrollbar::-webkit-scrollbar {
                   display: none;
@@ -221,7 +220,6 @@ const Home = () => {
               ))}
             </div>
 
-            {/* Navigation Arrows */}
             <button
               className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-black/60 p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10"
               onClick={() => scroll(containerRef, "left")}
@@ -253,8 +251,7 @@ const Home = () => {
   };
 
   return (
-    <div className="bg-[#141414] text-white min-h-screen">
-      {/* Header */}
+    <div className="bg-[#141414] text-white min-h-screen"> {/* Header */}
       <header className="flex items-center justify-between px-12 py-4 bg-gradient-to-b from-black/80 to-transparent fixed w-full z-10">
         <div className="flex items-center">
           <img
@@ -397,30 +394,25 @@ const Home = () => {
         </div>
       )}
 
-      {/* Content Rows */}
       <div className="relative z-10 px-12 pb-12 -mt-16">
-        {/* Trending Now Row */}
         <ContentRow
           title="Trending Now"
           content={trendingContent}
           containerRef={trendingRef}
         />
 
-        {/* Popular Movies Row */}
         <ContentRow
           title="Popular Movies"
           content={popularMovies}
           containerRef={popularRef}
         />
 
-        {/* Top Rated TV Shows Row */}
         <ContentRow
           title="Top Rated TV Shows"
           content={topRatedShows}
           containerRef={topRatedRef}
         />
 
-        {/* Upcoming Movies Row */}
         <ContentRow
           title="Coming Soon"
           content={upcomingMovies}
