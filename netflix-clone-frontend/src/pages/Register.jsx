@@ -111,12 +111,10 @@ const Register = () => {
           onChange={handleChange}
         >
           <option value="en">English</option>
-          <option value="bn">Bangla</option>
           <option value="es">Spanish</option>
           <option value="fr">French</option>
           <option value="de">German</option>
           <option value="it">Italian</option>
-          <option value="pt">Portuguese</option>
         </select>
 
         {/* Referral Code Input */}
