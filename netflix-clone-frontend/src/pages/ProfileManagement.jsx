@@ -277,8 +277,7 @@ const ProfileManagement = () => {
                 />
               </div>
 
-              {/* Profile picture upload */}
-              <div className="mb-6">
+              <div className="mb-6"> {/* Profile picture upload */}
                 <label className="block mb-2 text-gray-300">
                   Upload Profile Picture
                 </label>
@@ -294,9 +293,8 @@ const ProfileManagement = () => {
                   className="text-white"
                 />
               </div>
-
-              {/* Genres */}
-              <div className="mb-6">
+ 
+              <div className="mb-6"> {/* Genres */}
                 <label className="block mb-2 text-gray-300">Genres</label>
                 <div className="flex flex-wrap gap-2">
                   {genreOptions.map((genre) => (
