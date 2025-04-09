@@ -15,7 +15,6 @@ cd netflix-clone
 
 2. Run Backend
 cd netflix-clone-backend
-cp .env.example .env
 npm install
 npm run dev
 
