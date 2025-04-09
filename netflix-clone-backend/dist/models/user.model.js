@@ -113,4 +113,3 @@ const initUserModel = (sequelize) => {
 };
 exports.initUserModel = initUserModel;
 exports.default = User;
-//# sourceMappingURL=user.model.js.map

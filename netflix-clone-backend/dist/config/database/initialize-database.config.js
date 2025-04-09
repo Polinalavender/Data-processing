@@ -79,4 +79,3 @@ const initializeDatabase = async () => {
     }
 };
 exports.initializeDatabase = initializeDatabase;
-//# sourceMappingURL=initialize-database.config.js.map

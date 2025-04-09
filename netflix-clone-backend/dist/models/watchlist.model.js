@@ -32,4 +32,3 @@ const initWatchlistModel = (sequelize) => {
 };
 exports.initWatchlistModel = initWatchlistModel;
 exports.default = Watchlist;
-//# sourceMappingURL=watchlist.model.js.map
