@@ -8,7 +8,9 @@
 ## ⚡ Quick Start on Installing the Application
 
 1.Clone Repository
-  '''bash
+  ```bash
+git clone https://github.com/yourusername/netflix-clone.git
+cd netflix-clone
   
 2.Run Backend
   cd netflix-clone-backend
@@ -21,6 +23,7 @@
   npm run dev
 
 4.🖥️ Access the App with Google Chrome
+
 
 🚀 How to Use the Application
 
