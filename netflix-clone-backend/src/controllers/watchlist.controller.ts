@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import Watchlist from "../models/watchlist.model";
 
-// Add to watchlist
 export const addToWatchlist = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const item = await Watchlist.create(req.body);
@@ -11,7 +10,6 @@ export const addToWatchlist = async (req: Request, res: Response, next: NextFunc
   }
 };
 
-// Get watchlist
 export const getWatchlist = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const list = await Watchlist.findAll({ where: { profileId: req.params.profileId } });
@@ -21,7 +19,6 @@ export const getWatchlist = async (req: Request, res: Response, next: NextFuncti
   }
 };
 
-// Remove from watchlist
 export const removeFromWatchlist = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const deleted = await Watchlist.destroy({ where: { watchlistId: req.params.watchlistId } });
