@@ -23,11 +23,8 @@ const corsOptions = {
 
 
 app.use(cors(corsOptions));
-
-//For Content-Type of application/json
-app.use(express.json());
-//For Content-Type of application/x-www-form-urlencoded
-app.use(express.urlencoded({ extended: false }));
+app.use(express.json()); //For Content-Type of application/json
+app.use(express.urlencoded({ extended: false })); //For Content-Type of application/x-www-form-urlencoded
 app.use(cookieparser());
 
 app.use("/api/users", userRouter);
