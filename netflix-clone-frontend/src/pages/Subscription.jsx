@@ -48,8 +48,7 @@ const Subscription = () => {
     const today = new Date();
     const endDate = new Date(today);
 
-    // Set duration based on plan
-    if (selectedPlan === "FREE") {
+    if (selectedPlan === "FREE") { // Set duration based on plan
       endDate.setDate(today.getDate() + 7); // 7 days for free plan
     } else {
       endDate.setMonth(today.getMonth() + 1); // 1 month for paid plans

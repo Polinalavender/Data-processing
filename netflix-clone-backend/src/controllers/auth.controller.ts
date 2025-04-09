@@ -12,15 +12,13 @@ export const refreshToken = async (
     const { id, email, refreshToken } = req.body;
 
     if (!id || !email || !refreshToken) {
-      // id, email, and refresh token are required
       res.status(403).json({ message: "Unauthorized" });
       return;
     }
 
     const user = await User.findOne({ where: { id } });
 
-    if (!user) {
-      // User does not exist
+    if (!user) { // User does not exist
       res.status(403).json({ message: "Unauthorized" });
       return;
     }

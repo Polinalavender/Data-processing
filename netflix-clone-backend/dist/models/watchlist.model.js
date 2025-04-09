@@ -4,8 +4,8 @@ exports.initWatchlistModel = void 0;
 const sequelize_1 = require("sequelize");
 class Watchlist extends sequelize_1.Model {
 }
-// ✅ Named export for model initialization
-const initWatchlistModel = (sequelize) => {
+
+const initWatchlistModel = (sequelize) => { // Named export for model initialization
     Watchlist.init({
         watchlistId: {
             type: sequelize_1.DataTypes.INTEGER,
@@ -31,4 +31,3 @@ const initWatchlistModel = (sequelize) => {
     });
 };
 exports.initWatchlistModel = initWatchlistModel;
-exports.default = Watchlist;

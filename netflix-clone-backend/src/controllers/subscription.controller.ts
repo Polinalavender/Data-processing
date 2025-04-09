@@ -46,7 +46,6 @@ export const subscribe = async (
       price,
     });
 
-    // ===== Referral Logic Starts =====
     const user = await User.findByPk(userId);
 
     if (
@@ -63,7 +62,6 @@ export const subscribe = async (
         });
 
         if (referrerSubscription && referrerSubscription.plan !== "FREE") {
-          // Apply €2 discount
           await subscription.update({
             price: Math.max(0, subscription.price - 2),
           });
@@ -79,7 +77,6 @@ export const subscribe = async (
         }
       }
     }
-    // ===== Referral Logic Ends =====
 
     res.status(201).json(subscription);
   } catch (error: any) {

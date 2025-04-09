@@ -14,8 +14,7 @@ export const register = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    // Create a new user object
-    const newUser = User.build({
+    const newUser = User.build({ // Create a new user object
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       email: req.body.email,
@@ -32,17 +31,14 @@ export const register = async (
     const token = user.generateToken();
     const refreshToken = user.generateRefreshToken();
 
-    // Save refresh token
-    user.refreshToken = refreshToken;
+    user.refreshToken = refreshToken; // Save refresh token
     await user.save();
 
-    // Referral logic: check if the user was referred by someone
-    if (user.referredBy) {
+    if (user.referredBy) { // Check if the user was referred by someone
       const referrer = await User.findByPk(user.referredBy);
 
       // If the referrer exists and has not yet received the referral bonus, apply the bonus
       if (referrer && !referrer.hasReferralBonus) {
-        // Update both the new user and the referrer to have a referral bonus
         await user.update({ hasReferralBonus: true });
         await referrer.update({ hasReferralBonus: true });
 
@@ -53,7 +49,7 @@ export const register = async (
 
         if (referrerSubscription && referrerSubscription.price > 2) {
           await referrerSubscription.update({
-            price: referrerSubscription.price - 2, // Apply €2 discount
+            price: referrerSubscription.price - 2, 
           });
         } else {
           console.log("Referrer already received the maximum discount or no paid subscription.");
@@ -102,8 +98,7 @@ export const login = async (
 
     const isPasswordAuthentic = await user.validatePassword(req.body.password);
     if (!isPasswordAuthentic) {
-      // Increment failed login attempts
-      user.failedAttempts += 1;
+      user.failedAttempts += 1; // Increment failed login attempts
       await user.update({ failedAttempts: user.failedAttempts });
 
       // Lock account if failed attempts exceed MAX_FAILED_ATTEMPTS

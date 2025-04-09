@@ -14,13 +14,11 @@ const Watch = () => {
   useEffect(() => {
     setLoading(true);
     
-    // Fetch movie details
-    fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=en-US`)
+    fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=en-US`) // Fetch movie details
       .then(response => response.json())
       .then(data => {
         if (data.success === false) {
-          // Try TV show endpoint if movie fails
-          return fetch(`https://api.themoviedb.org/3/tv/${id}?api_key=${API_KEY}&language=en-US`);
+          return fetch(`https://api.themoviedb.org/3/tv/${id}?api_key=${API_KEY}&language=en-US`); // Try TV show endpoint if movie fails
         }
         return Promise.resolve({ json: () => data, isMovie: true });
       })
@@ -30,9 +28,7 @@ const Watch = () => {
       })
       .then(({ data, isMovie }) => {
         setMovieDetails(data);
-        
-        // Fetch videos for the content
-        const videoEndpoint = isMovie 
+        const videoEndpoint = isMovie // Fetch videos for the content
           ? `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${API_KEY}`
           : `https://api.themoviedb.org/3/tv/${id}/videos?api_key=${API_KEY}`;
           
@@ -40,8 +36,7 @@ const Watch = () => {
       })
       .then(response => response.json())
       .then(data => {
-        // Find trailer or teaser or any video
-        const trailer = data.results?.find(video => video.type === "Trailer" && video.site === "YouTube") || 
+        const trailer = data.results?.find(video => video.type === "Trailer" && video.site === "YouTube") || // Find trailer or teaser or any video
                        data.results?.find(video => video.type === "Teaser" && video.site === "YouTube") ||
                        data.results?.[0];
                        

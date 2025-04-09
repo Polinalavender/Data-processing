@@ -41,8 +41,7 @@ const Home = () => {
           behavior: "smooth",
         });
 
-        // Reset to beginning if we've scrolled far enough
-        if (
+        if (  // Reset to beginning if we've scrolled far enough
           containerRef.current.scrollLeft + containerRef.current.clientWidth >=
           containerRef.current.scrollWidth - 200
         ) {
@@ -65,26 +64,22 @@ const Home = () => {
       try {
         setLoading(true);
 
-        // Fetch trending content
-        const trendingResponse = await fetch(
+        const trendingResponse = await fetch( // Fetch trending content
           `https://api.themoviedb.org/3/trending/all/week?api_key=${API_KEY}&language=en-US`
         );
         const trendingData = await trendingResponse.json();
 
-        // Fetch popular movies
-        const popularResponse = await fetch(
+        const popularResponse = await fetch( // Fetch popular movies
           `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US`
         );
         const popularData = await popularResponse.json();
 
-        // Fetch top rated TV shows
-        const topRatedResponse = await fetch(
+        const topRatedResponse = await fetch(   // Fetch top rated TV shows
           `https://api.themoviedb.org/3/tv/top_rated?api_key=${API_KEY}&language=en-US`
         );
         const topRatedData = await topRatedResponse.json();
 
-        // Fetch upcoming movies
-        const upcomingResponse = await fetch(
+        const upcomingResponse = await fetch(  // Fetch upcoming movies
           `https://api.themoviedb.org/3/movie/upcoming?api_key=${API_KEY}&language=en-US`
         );
         const upcomingData = await upcomingResponse.json();
@@ -110,8 +105,7 @@ const Home = () => {
     alert("Referral link copied!");
   };
 
-  // Function for scroll buttons
-  const scroll = (ref, direction) => {
+  const scroll = (ref, direction) => { // Function for scroll buttons
     if (ref.current) {
       const scrollAmount = ref.current.clientWidth * 0.75;
       ref.current.scrollBy({
@@ -121,8 +115,7 @@ const Home = () => {
     }
   };
 
-  // Content row component to avoid repetition
-  const ContentRow = ({ title, content, containerRef }) => {
+  const ContentRow = ({ title, content, containerRef }) => { // Content row component to avoid repetition
     return (
       <div className="mb-12">
         <h2 className="text-xl font-bold mb-4">{title}</h2>
@@ -141,11 +134,10 @@ const Home = () => {
               className="flex space-x-4 overflow-x-auto pb-4 scroll-smooth no-scrollbar"
               ref={containerRef}
               style={{
-                msOverflowStyle: "none" /* IE and Edge */,
-                scrollbarWidth: "none" /* Firefox */,
+                msOverflowStyle: "none",
+                scrollbarWidth: "none",
               }}
             >
-              {/* Additional CSS for Webkit browsers*/}
               <style jsx>{`
                 div.no-scrollbar::-webkit-scrollbar {
                   display: none;
@@ -228,7 +220,6 @@ const Home = () => {
               ))}
             </div>
 
-            {/* Navigation Arrows */}
             <button
               className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-black/60 p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10"
               onClick={() => scroll(containerRef, "left")}
@@ -260,8 +251,7 @@ const Home = () => {
   };
 
   return (
-    <div className="bg-[#141414] text-white min-h-screen">
-      {/* Header */}
+    <div className="bg-[#141414] text-white min-h-screen"> {/* Header */}
       <header className="flex items-center justify-between px-12 py-4 bg-gradient-to-b from-black/80 to-transparent fixed w-full z-10">
         <div className="flex items-center">
           <img
@@ -404,30 +394,25 @@ const Home = () => {
         </div>
       )}
 
-      {/* Content Rows */}
       <div className="relative z-10 px-12 pb-12 -mt-16">
-        {/* Trending Now Row */}
         <ContentRow
           title="Trending Now"
           content={trendingContent}
           containerRef={trendingRef}
         />
 
-        {/* Popular Movies Row */}
         <ContentRow
           title="Popular Movies"
           content={popularMovies}
           containerRef={popularRef}
         />
 
-        {/* Top Rated TV Shows Row */}
         <ContentRow
           title="Top Rated TV Shows"
           content={topRatedShows}
           containerRef={topRatedRef}
         />
 
-        {/* Upcoming Movies Row */}
         <ContentRow
           title="Coming Soon"
           content={upcomingMovies}

@@ -35,4 +35,3 @@ const initWatchHistoryModel = (sequelize) => {
     });
 };
 exports.initWatchHistoryModel = initWatchHistoryModel;
-exports.default = WatchHistory;

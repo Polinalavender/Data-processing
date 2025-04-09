@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getHistoryByProfile = exports.trackWatch = void 0;
 const watchhistory_model_1 = __importDefault(require("../models/watchhistory.model"));
+
 // Add or update watch history
 const trackWatch = async (req, res, next) => {
     try {
@@ -26,8 +27,8 @@ const trackWatch = async (req, res, next) => {
     }
 };
 exports.trackWatch = trackWatch;
-// Get watch history by profile
-const getHistoryByProfile = async (req, res, next) => {
+
+const getHistoryByProfile = async (req, res, next) => { // Get watch history by profile
     try {
         const history = await watchhistory_model_1.default.findAll({ where: { profileId: req.params.profileId } });
         res.status(200).json(history);
