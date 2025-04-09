@@ -46,7 +46,6 @@ export const subscribe = async (
       price,
     });
 
-    // ===== Referral Logic Starts =====
     const user = await User.findByPk(userId);
 
     if (
@@ -63,7 +62,6 @@ export const subscribe = async (
         });
 
         if (referrerSubscription && referrerSubscription.plan !== "FREE") {
-          // Apply €2 discount
           await subscription.update({
             price: Math.max(0, subscription.price - 2),
           });
@@ -79,7 +77,6 @@ export const subscribe = async (
         }
       }
     }
-    // ===== Referral Logic Ends =====
 
     res.status(201).json(subscription);
   } catch (error: any) {
@@ -109,23 +106,3 @@ export const getSubscription = async (
   }
 };
 
-export const unsubscribe = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): Promise<void> => {
-  try {
-    const deleted = await Subscription.destroy({
-      where: { userId: req.params.userId },
-    });
-
-    if (deleted === 0) {
-      res.status(404).json({ message: "Subscription not found" });
-      return;
-    }
-
-    res.status(200).json({ message: "Unsubscribed successfully" });
-  } catch (error) {
-    next(error);
-  }
-};
