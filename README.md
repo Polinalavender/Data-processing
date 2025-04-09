@@ -25,3 +25,6 @@ npm install
 npm run dev
 
 4.🖥️ Access the App with Google Chrome
+
+📌 Notes
+Both apps need to be running for the clone to function properly.
