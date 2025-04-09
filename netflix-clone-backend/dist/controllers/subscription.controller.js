@@ -88,3 +88,21 @@ const getSubscription = async (req, res, next) => {
         next(error);
     }
 };
+
+exports.getSubscription = getSubscription;
+const unsubscribe = async (req, res, next) => {
+    try {
+        const deleted = await subscription_model_1.default.destroy({
+            where: { userId: req.params.userId },
+        });
+        if (deleted === 0) {
+            res.status(404).json({ message: "Subscription not found" });
+            return;
+        }
+        res.status(200).json({ message: "Unsubscribed successfully" });
+    }
+    catch (error) {
+        next(error);
+    }
+};
+exports.unsubscribe = unsubscribe;
