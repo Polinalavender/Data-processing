@@ -16,8 +16,7 @@ const Login = () => {
   const [lockTime, setLockTime] = useState(null);
   const navigate = useNavigate();
 
-  // Function to handle login
-  const handleLogin = async (e) => {
+  const handleLogin = async (e) => {  // Function to handle login
     e.preventDefault();
     setLoading(true);
     setError("");
@@ -26,8 +25,7 @@ const Login = () => {
     const failedAttempts = parseInt(localStorage.getItem("failedAttempts") || "0", 10);
     const storedLockTime = parseInt(localStorage.getItem("lockTime") || "0", 10);
 
-    // Check if the account is locked
-    if (storedLockTime > new Date().getTime()) {
+    if (storedLockTime > new Date().getTime()) { // Check if the account is locked
       const timeRemaining = Math.ceil((storedLockTime - new Date().getTime()) / 1000);
       setLockTime(timeRemaining); // Set remaining lock time in seconds
       setLoading(false);
@@ -46,20 +44,16 @@ const Login = () => {
       localStorage.setItem("token", token);
       localStorage.setItem("refreshToken", refreshToken);
       localStorage.setItem("user", JSON.stringify(user));
-
-      // Reset failed attempts on successful login
-      localStorage.setItem("failedAttempts", "0");
+      localStorage.setItem("failedAttempts", "0");  // Reset failed attempts on successful login
 
       navigate("/subscription");
     } catch (err) {
-      // Increment failed login attempts and check if the user needs to be locked
-      if (failedAttempts + 1 >= MAX_FAILED_ATTEMPTS) {
+      if (failedAttempts + 1 >= MAX_FAILED_ATTEMPTS) { // Increment failed login attempts and check if the user needs to be locked
         const lockUntil = new Date().getTime() + LOCK_TIME;
         localStorage.setItem("lockTime", lockUntil.toString()); // Set lock time for 15 minutes
       }
 
-      // Increment failed attempts count
-      localStorage.setItem("failedAttempts", (failedAttempts + 1).toString());
+      localStorage.setItem("failedAttempts", (failedAttempts + 1).toString());  // Increment failed attempts count
 
       setError(
         err.response?.data?.emailOrPassword || "Login failed. Please try again."
