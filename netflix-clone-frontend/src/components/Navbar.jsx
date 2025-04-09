@@ -20,8 +20,7 @@ const Navbar = ({ currentProfile, allProfiles }) => {
     alert("Referral link copied!");
   };
 
-  // Default profile if none is provided
-  const profile = currentProfile || {
+  const profile = currentProfile || { // Default profile if none is provided
     name: "User",
     photoUrl:
       "https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png",
@@ -42,8 +41,7 @@ const Navbar = ({ currentProfile, allProfiles }) => {
     };
   }, []);
 
-  // Close profile menu when clicking outside
-  useEffect(() => {
+  useEffect(() => { // Close profile menu when clicking outside
     const handleClickOutside = (event) => {
       if (showProfileMenu && !event.target.closest(".profile-menu-container")) {
         setShowProfileMenu(false);
