@@ -7,6 +7,6 @@ exports.watchHistoryRouter = void 0;
 const express_1 = __importDefault(require("express"));
 const watchhistory_controller_1 = require("../controllers/watchhistory.controller");
 const router = express_1.default.Router();
-router.post("/", watchhistory_controller_1.trackWatch); // Track watch
-router.get("/profile/:profileId", watchhistory_controller_1.getHistoryByProfile); // Get history by profile
+router.post("/", watchhistory_controller_1.trackWatch); 
+router.get("/profile/:profileId", watchhistory_controller_1.getHistoryByProfile); 
 exports.watchHistoryRouter = router;
