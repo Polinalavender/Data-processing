@@ -13,9 +13,7 @@ class Watchlist
   declare filmId: number;
   declare addedAt: Date;
 }
-
-// ✅ Named export for model initialization
-export const initWatchlistModel = (sequelize: Sequelize): void => {
+export const initWatchlistModel = (sequelize: Sequelize): void => { 
   Watchlist.init(
     {
       watchlistId: {
