@@ -184,3 +184,8 @@ export const updateBonusByUserId = async (
       }
     }
 
+    res.status(200).json(user);
+  } catch (error) {
+    next(error);
+  }
+}
