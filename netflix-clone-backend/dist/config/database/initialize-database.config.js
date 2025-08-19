@@ -51,30 +51,31 @@ const initializeDatabase = async () => {
         (0, watchhistory_model_1.initWatchHistoryModel)(exports.sequelize);
         (0, watchlist_model_1.initWatchlistModel)(exports.sequelize);
         (0, subscription_model_1.initSubscriptionModel)(exports.sequelize);
-        
+        // User -> Profiles
         user_model_1.default.hasMany(profile_model_1.default, { foreignKey: "userId", as: "profiles", onDelete: "CASCADE" });
-        profile_model_1.default.belongsTo(user_model_1.default, { foreignKey: "userId", as: "user" }); // Profile -> WatchHistory
-        
+        profile_model_1.default.belongsTo(user_model_1.default, { foreignKey: "userId", as: "user" });
+        // Profile -> WatchHistory
         profile_model_1.default.hasMany(watchhistory_model_1.default, { foreignKey: "profileId", as: "watchHistory", onDelete: "CASCADE" });
-        watchhistory_model_1.default.belongsTo(profile_model_1.default, { foreignKey: "profileId", as: "profile" });   // Film -> WatchHistory
-       
+        watchhistory_model_1.default.belongsTo(profile_model_1.default, { foreignKey: "profileId", as: "profile" });
+        // Film -> WatchHistory
         film_model_1.default.hasMany(watchhistory_model_1.default, { foreignKey: "filmId", as: "watchHistory", onDelete: "CASCADE" });
-        watchhistory_model_1.default.belongsTo(film_model_1.default, { foreignKey: "filmId", as: "film" });  // Profile -> Watchlist
-       
+        watchhistory_model_1.default.belongsTo(film_model_1.default, { foreignKey: "filmId", as: "film" });
+        // Profile -> Watchlist
         profile_model_1.default.hasMany(watchlist_model_1.default, { foreignKey: "profileId", as: "watchlist", onDelete: "CASCADE" });
-        watchlist_model_1.default.belongsTo(profile_model_1.default, { foreignKey: "profileId", as: "profile" }); // Film -> Watchlist
-        
+        watchlist_model_1.default.belongsTo(profile_model_1.default, { foreignKey: "profileId", as: "profile" });
+        // Film -> Watchlist
         film_model_1.default.hasMany(watchlist_model_1.default, { foreignKey: "filmId", as: "watchlistItems", onDelete: "CASCADE" });
-        watchlist_model_1.default.belongsTo(film_model_1.default, { foreignKey: "filmId", as: "film" }); // User -> Subscription
-
+        watchlist_model_1.default.belongsTo(film_model_1.default, { foreignKey: "filmId", as: "film" });
+        // User -> Subscription
         user_model_1.default.hasOne(subscription_model_1.default, { foreignKey: "userId", as: "subscription", onDelete: "CASCADE" });
         subscription_model_1.default.belongsTo(user_model_1.default, { foreignKey: "userId", as: "user" });
         await exports.sequelize.authenticate();
-       
-        await exports.sequelize.sync({ alter: true });  // await sequelize.sync();
+        await exports.sequelize.sync({ alter: true }); // await sequelize.sync();
         console.log(`✅ Database connected and synchronized.`);
     }
     catch (error) {
         console.error("❌ Database connection failed:", error);
     }
 };
+exports.initializeDatabase = initializeDatabase;
+//# sourceMappingURL=initialize-database.config.js.map

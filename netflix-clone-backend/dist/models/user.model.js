@@ -8,24 +8,20 @@ const sequelize_1 = require("sequelize");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 class User extends sequelize_1.Model {
-    
-    generateToken() { // Generate JWT token
+    generateToken() {
         return jsonwebtoken_1.default.sign({ id: this.id, email: this.email }, process.env.JWT_SECRET || "JWT_SECRET", {
             expiresIn: "24h",
         });
     }
-   
-    generateRefreshToken() {  // Generate refresh token
+    generateRefreshToken() {
         return jsonwebtoken_1.default.sign({ id: this.id, email: this.email }, process.env.REFRESH_TOKEN_SECRET || "REFRESH_SECRET", {
             expiresIn: "7d",
         });
     }
-
     async validatePassword(password) {
         return bcryptjs_1.default.compare(password, this.password);
     }
-    
-    toJSON() { // Convert the model to a plain JSON object (without password and refresh token)
+    toJSON() {
         const values = { ...this.get() };
         delete values.password;
         delete values.refreshToken;
@@ -99,16 +95,15 @@ const initUserModel = (sequelize) => {
         sequelize,
         tableName: "users",
     });
-
-    User.beforeCreate(async (user) => {     // Hash password before saving
+    User.beforeCreate(async (user) => {
         user.password = await bcryptjs_1.default.hash(user.password, 10);
     });
-    
-    User.beforeUpdate(async (user) => { // Reset failed login attempts and unlock user account after successful login
+    User.beforeUpdate(async (user) => {
         if (user.failedAttempts > 3 && !user.lockUntil) {
-          
-            user.lockUntil = new Date(new Date().getTime() + 15 * 60000);   // Lock the account for 15 minutes if more than 3 failed attempts
+            user.lockUntil = new Date(new Date().getTime() + 15 * 60000); // 15 minutes lock of the account
         }
     });
 };
 exports.initUserModel = initUserModel;
+exports.default = User;
+//# sourceMappingURL=user.model.js.map

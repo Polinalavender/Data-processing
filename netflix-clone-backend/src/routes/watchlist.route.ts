@@ -3,7 +3,7 @@ import {
   addToWatchlist,
   getWatchlist,
   removeFromWatchlist,
-} from "../controllers/watchlist.controller.ts";
+} from "../controllers/watchlist.controller";
 
 const router = express.Router();
 

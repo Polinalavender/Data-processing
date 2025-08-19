@@ -5,8 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getFilmById = exports.getAllFilms = exports.createFilm = void 0;
 const film_model_1 = __importDefault(require("../models/film.model"));
-
-const createFilm = async (req, res, next) => { 
+const createFilm = async (// Add new film
+req, res, next) => {
     try {
         const film = await film_model_1.default.create(req.body);
         res.status(201).json(film);
@@ -15,7 +15,7 @@ const createFilm = async (req, res, next) => {
         next(error);
     }
 };
-exports.createFilm = createFilm; 
+exports.createFilm = createFilm;
 const getAllFilms = async (_req, res, next) => {
     try {
         const films = await film_model_1.default.findAll();
@@ -25,8 +25,9 @@ const getAllFilms = async (_req, res, next) => {
         next(error);
     }
 };
-exports.getAllFilms = getAllFilms; 
-const getFilmById = async (req, res, next) => {
+exports.getAllFilms = getAllFilms;
+const getFilmById = async (// Get single film
+req, res, next) => {
     try {
         const film = await film_model_1.default.findByPk(req.params.filmId);
         if (!film) {
@@ -40,3 +41,4 @@ const getFilmById = async (req, res, next) => {
     }
 };
 exports.getFilmById = getFilmById;
+//# sourceMappingURL=film.controller.js.map

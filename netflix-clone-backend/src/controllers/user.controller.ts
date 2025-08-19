@@ -14,7 +14,7 @@ export const register = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const newUser = User.build({ // Create a new user object
+    const newUser = User.build({
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       email: req.body.email,
@@ -23,33 +23,35 @@ export const register = async (
       language: req.body.language || "en",
       accountActivation: req.body.accountActivation ?? false,
       status: (req.body.status as "active" | "inactive") || "active",
-      referredBy: req.body.referredBy || null, // Referral code field
-      hasReferralBonus: false, // Initially set to false
+      referredBy: req.body.referredBy || null,
+      hasReferralBonus: false,
     });
 
+    if (!newUser) {
+      throw new Error("Invalid user data");
+    }
+
     const user = await newUser.save();
+
     const token = user.generateToken();
     const refreshToken = user.generateRefreshToken();
-
-    user.refreshToken = refreshToken; // Save refresh token
+    user.refreshToken = refreshToken;
     await user.save();
 
-    if (user.referredBy) { // Check if the user was referred by someone
+    if (user.referredBy) {
       const referrer = await User.findByPk(user.referredBy);
 
-      // If the referrer exists and has not yet received the referral bonus, apply the bonus
       if (referrer && !referrer.hasReferralBonus) {
         await user.update({ hasReferralBonus: true });
         await referrer.update({ hasReferralBonus: true });
 
-        // Check if the referrer has a paid subscription and apply the €2 discount
         const referrerSubscription = await Subscription.findOne({
           where: { userId: referrer.id },
         });
 
         if (referrerSubscription && referrerSubscription.price > 2) {
           await referrerSubscription.update({
-            price: referrerSubscription.price - 2, 
+            price: referrerSubscription.price - 2,
           });
         } else {
           console.log("Referrer already received the maximum discount or no paid subscription.");
@@ -60,6 +62,7 @@ export const register = async (
     }
 
     res.status(201).json({ user, token, refreshToken });
+    return;
   } catch (error) {
     if (error instanceof ValidationError) {
       const errorMessages = error.errors.map((err) => err.message);
@@ -70,7 +73,9 @@ export const register = async (
       });
       return;
     }
-    next(error);
+    console.error(error);
+    res.status(400).json({ message: "Registration failed", error: (error as Error).message });
+    return;
   }
 };
 
@@ -84,6 +89,7 @@ export const login = async (
       where: { email: req.body.email },
       attributes: { include: ["password", "refreshToken"] },
     });
+
     const errors = { emailOrPassword: "Invalid email or password" };
 
     if (!user) {
@@ -94,98 +100,94 @@ export const login = async (
     if (user.lockUntil && user.lockUntil > new Date()) {
       const timeRemaining = Math.ceil((user.lockUntil.getTime() - new Date().getTime()) / 1000);
       res.status(403).json({ message: `Account is temporarily locked. Try again in ${timeRemaining} seconds.` });
+      return;
     }
 
     const isPasswordAuthentic = await user.validatePassword(req.body.password);
     if (!isPasswordAuthentic) {
-      user.failedAttempts += 1; // Increment failed login attempts
+      user.failedAttempts += 1;
       await user.update({ failedAttempts: user.failedAttempts });
 
-      // Lock account if failed attempts exceed MAX_FAILED_ATTEMPTS
       if (user.failedAttempts >= MAX_FAILED_ATTEMPTS) {
-        user.lockUntil = new Date(new Date().getTime() + LOCK_TIME); // Set lock time for 15 minutes
+        user.lockUntil = new Date(Date.now() + LOCK_TIME);
         await user.update({ lockUntil: user.lockUntil });
       }
 
       await user.save();
-      res.status(422).json(errors); // Invalid password
+      res.status(422).json(errors);
+      return;
     }
 
-    // Reset failed attempts and lock time on successful login
+    // Success: reset counters
     user.failedAttempts = 0;
-    user.lockUntil = null; // Clear the lock
-    await user.save();
+    user.lockUntil = null;
 
-    // Generate JWT tokens
+    // Rotate refresh token on login for consistency with register
     const token = user.generateToken();
     const refreshToken = user.generateRefreshToken();
-
-    // Save refresh token
     user.refreshToken = refreshToken;
     await user.save();
 
-    // Send the response with user data and tokens
-    res.status(200).json({ user, refreshToken, token });
+    res.status(200).json({ user, token, refreshToken });
+    return;
   } catch (error) {
-    next(error);
+    console.error(error);
+    res.status(400).json({ message: "Login failed", error: (error as Error).message });
+    return;
   }
 };
 
-export const currentUser = async (
-  req: IUserRequest,
-  res: Response,
-  next: NextFunction
-) => {
+/**
+ * Return the currently authenticated user.
+ * Assumes an auth middleware puts the user id on req.user.id (adapt if different).
+ */
+export const currentUser = async (req: IUserRequest, res: Response): Promise<void> => {
   try {
-    res.status(200).json(req.user);
-  } catch (error) {
-    next(error);
-  }
-};
+    const userId = (req.user as any)?.id;
+    if (!userId) {
+      res.status(401).json({ message: "Not authenticated" });
+      return;
+    }
 
-export const getUserById = async (
-  req: IUserRequest,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const user = await User.findByPk(req.params.id);
-    if (!user) res.status(404).json({ message: "User not found" });
-
-    res.json(user);
-  } catch (error) {
-    next(error);
-  }
-};
-
-export const updateBonusByUserId = async (
-  req: Request<{ userId: string }>,
-  res: Response,
-  next: NextFunction
-): Promise<void> => {
-  try {
-    const userId = parseInt(req.params.userId, 10);
-    const user = await User.findByPk(userId);
+    const user = await User.findByPk(userId, {
+      attributes: { exclude: ["password", "refreshToken"] },
+    });
 
     if (!user) {
       res.status(404).json({ message: "User not found" });
       return;
     }
 
-    if (user.referredBy && !user.hasReferralBonus) {
-      const referrer = await User.findByPk(user.referredBy);
+    res.json({ user });
+    return;
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ message: "Failed to fetch current user", error: (error as Error).message });
+    return;
+  }
+};
 
-      if (referrer && !referrer.hasReferralBonus) {
-        // Apply €2 discount
-        await user.update({ hasReferralBonus: true });
-        await referrer.update({ hasReferralBonus: true });
+/**
+ * Fetch a user by :id route param (public or protected depending on your routes).
+ */
+export const getUserById = async (req: Request<{ id: string }>, res: Response): Promise<void> => {
+  try {
+    const { id } = req.params;
 
-        console.log(`Referral bonus applied: ${user.email} & ${referrer.email}`);
-      }
+    const user = await User.findByPk(id, {
+      attributes: { exclude: ["password", "refreshToken"] },
+    });
+
+    if (!user) {
+      res.status(404).json({ message: "User not found" });
+      return;
     }
 
-    res.status(200).json(user);
+    res.json({ user });
+    return;
   } catch (error) {
-    next(error);
+    console.error(error);
+    res.status(400).json({ message: "Failed to fetch user", error: (error as Error).message });
+    return;
   }
-}
+};

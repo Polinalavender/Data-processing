@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+const isProd = process.env.NODE_ENV === "production" || process.env.DB_SSL === "true";
+
 export const databaseConfig = {
   port: process.env.PORT || 3000,
   jwtSecret: process.env.JWT_SECRET || "JWT_SECRET",
@@ -13,11 +15,8 @@ export const databaseConfig = {
     password: process.env.DB_PASSWORD || "password",
     database: process.env.DB_NAME || "netflix-clone",
     dialect: "postgres" as Dialect,
-    dialectOptions: {
-      ssl: {
-        require: true,
-        rejectUnauthorized: false,
-      },
-    },
+    dialectOptions: isProd
+      ? { ssl: { require: true, rejectUnauthorized: false } }
+      : {}, // no SSL locally
   },
 };

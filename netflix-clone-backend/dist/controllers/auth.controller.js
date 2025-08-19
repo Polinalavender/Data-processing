@@ -10,12 +10,12 @@ const refreshToken = async (req, res, next) => {
     try {
         const { id, email, refreshToken } = req.body;
         if (!id || !email || !refreshToken) {
-            res.status(403).json({ message: "Unauthorized" }); // id, email, and refresh token are required
+            res.status(403).json({ message: "Unauthorized" });
             return;
         }
         const user = await user_model_1.default.findOne({ where: { id } });
-        if (!user) {
-            res.status(403).json({ message: "Unauthorized" });  // User does not exist
+        if (!user) { // User does not exist
+            res.status(403).json({ message: "Unauthorized" });
             return;
         }
         jsonwebtoken_1.default.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET || "REFRESH_TOKEN_SECRET", (err, decoded) => {
@@ -40,3 +40,4 @@ const refreshToken = async (req, res, next) => {
     }
 };
 exports.refreshToken = refreshToken;
+//# sourceMappingURL=auth.controller.js.map

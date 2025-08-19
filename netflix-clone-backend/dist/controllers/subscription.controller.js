@@ -40,8 +40,7 @@ const subscribe = async (req, res, next) => {
             endDate,
             price,
         });
-        
-        const user = await user_model_1.default.findByPk(userId); //Refer a friend 
+        const user = await user_model_1.default.findByPk(userId);
         if (user &&
             user.referredBy &&
             !user.hasReferralBonus &&
@@ -53,7 +52,7 @@ const subscribe = async (req, res, next) => {
                 });
                 if (referrerSubscription && referrerSubscription.plan !== "FREE") {
                     await subscription.update({
-                        price: Math.max(0, subscription.price - 2), // Apply €2 discount
+                        price: Math.max(0, subscription.price - 2),
                     });
                     await referrerSubscription.update({
                         price: Math.max(0, referrerSubscription.price - 2),
@@ -64,7 +63,6 @@ const subscribe = async (req, res, next) => {
                 }
             }
         }
-
         res.status(201).json(subscription);
     }
     catch (error) {
@@ -88,7 +86,6 @@ const getSubscription = async (req, res, next) => {
         next(error);
     }
 };
-
 exports.getSubscription = getSubscription;
 const unsubscribe = async (req, res, next) => {
     try {
@@ -106,3 +103,4 @@ const unsubscribe = async (req, res, next) => {
     }
 };
 exports.unsubscribe = unsubscribe;
+//# sourceMappingURL=subscription.controller.js.map

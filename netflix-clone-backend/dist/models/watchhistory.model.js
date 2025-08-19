@@ -35,3 +35,5 @@ const initWatchHistoryModel = (sequelize) => {
     });
 };
 exports.initWatchHistoryModel = initWatchHistoryModel;
+exports.default = WatchHistory;
+//# sourceMappingURL=watchhistory.model.js.map

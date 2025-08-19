@@ -11,7 +11,7 @@ const MAX_FAILED_ATTEMPTS = 3;
 const LOCK_TIME = 15 * 60 * 1000;
 const register = async (req, res, next) => {
     try {
-        const newUser = user_model_1.default.build({ // Create a new user object
+        const newUser = user_model_1.default.build({
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             email: req.body.email,
@@ -20,25 +20,27 @@ const register = async (req, res, next) => {
             language: req.body.language || "en",
             accountActivation: req.body.accountActivation ?? false,
             status: req.body.status || "active",
-            referredBy: req.body.referredBy || null, // Field for the refering code
-            hasReferralBonus: false, 
+            referredBy: req.body.referredBy || null, // Referral code field
+            hasReferralBonus: false, // Initially set to false
         });
         const user = await newUser.save();
         const token = user.generateToken();
         const refreshToken = user.generateRefreshToken();
-        user.refreshToken = refreshToken;
+        user.refreshToken = refreshToken; // Save refresh token
         await user.save();
-        if (user.referredBy) { // Referral logic: check if the user was referred by someone
+        if (user.referredBy) { // Check if the user was referred by someone
             const referrer = await user_model_1.default.findByPk(user.referredBy);
-            if (referrer && !referrer.hasReferralBonus) { // If the referrer exists and has not yet received the referral bonus, apply the bonus
-                await user.update({ hasReferralBonus: true }); // Update both the new user and the referrer to have a referral bonus
+            // If the referrer exists and has not yet received the referral bonus, apply the bonus
+            if (referrer && !referrer.hasReferralBonus) {
+                await user.update({ hasReferralBonus: true });
                 await referrer.update({ hasReferralBonus: true });
-                const referrerSubscription = await subscription_model_1.default.findOne({ // Check if the referrer has a paid subscription and apply the €2 discount
+                // Check if the referrer has a paid subscription and apply the €2 discount
+                const referrerSubscription = await subscription_model_1.default.findOne({
                     where: { userId: referrer.id },
                 });
                 if (referrerSubscription && referrerSubscription.price > 2) {
                     await referrerSubscription.update({
-                        price: referrerSubscription.price - 2, // Apply €2 discount
+                        price: referrerSubscription.price - 2,
                     });
                 }
                 else {
@@ -80,9 +82,10 @@ const login = async (req, res, next) => {
         }
         const isPasswordAuthentic = await user.validatePassword(req.body.password);
         if (!isPasswordAuthentic) {
-            user.failedAttempts += 1; // Increment the failed login attempts
+            user.failedAttempts += 1; // Increment failed login attempts
             await user.update({ failedAttempts: user.failedAttempts });
-            if (user.failedAttempts >= MAX_FAILED_ATTEMPTS) { // Lock account when exceed MAX_FAILED_ATTEMPTS
+            // Lock account if failed attempts exceed MAX_FAILED_ATTEMPTS
+            if (user.failedAttempts >= MAX_FAILED_ATTEMPTS) {
                 user.lockUntil = new Date(new Date().getTime() + LOCK_TIME); // Set lock time for 15 minutes
                 await user.update({ lockUntil: user.lockUntil });
             }
@@ -93,11 +96,14 @@ const login = async (req, res, next) => {
         user.failedAttempts = 0;
         user.lockUntil = null; // Clear the lock
         await user.save();
-        const token = user.generateToken(); // Generate JWT tokens
+        // Generate JWT tokens
+        const token = user.generateToken();
         const refreshToken = user.generateRefreshToken();
+        // Save refresh token
         user.refreshToken = refreshToken;
         await user.save();
-        res.status(200).json({ user, refreshToken, token }); // Send the response with user data and tokens
+        // Send the response with user data and tokens
+        res.status(200).json({ user, refreshToken, token });
     }
     catch (error) {
         next(error);
@@ -136,7 +142,8 @@ const updateBonusByUserId = async (req, res, next) => {
         if (user.referredBy && !user.hasReferralBonus) {
             const referrer = await user_model_1.default.findByPk(user.referredBy);
             if (referrer && !referrer.hasReferralBonus) {
-                await user.update({ hasReferralBonus: true }); // Apply €2 discount, for refer a friend
+                // Apply €2 discount
+                await user.update({ hasReferralBonus: true });
                 await referrer.update({ hasReferralBonus: true });
                 console.log(`Referral bonus applied: ${user.email} & ${referrer.email}`);
             }
@@ -148,3 +155,4 @@ const updateBonusByUserId = async (req, res, next) => {
     }
 };
 exports.updateBonusByUserId = updateBonusByUserId;
+//# sourceMappingURL=user.controller.js.map

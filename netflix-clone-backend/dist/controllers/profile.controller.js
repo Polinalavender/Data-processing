@@ -92,3 +92,4 @@ const updateProfile = async (req, res, next) => {
     }
 };
 exports.updateProfile = updateProfile;
+//# sourceMappingURL=profile.controller.js.map

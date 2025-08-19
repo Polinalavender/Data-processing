@@ -13,3 +13,4 @@ const initialize_database_config_1 = require("./config/database/initialize-datab
         console.log(`Server is running on port ${PORT}`);
     });
 });
+//# sourceMappingURL=server.js.map
