@@ -44,8 +44,21 @@ Back-end usage
 
 -Check API Migrations and endpoints to check the fetching of data real-time and usage of API integration in the application code file.
 
+🗄️ Database Setup
+
+Start the container
+-docker ps   # check if uni-postgres is running
+
+Export the database (backup):
+-docker exec -t uni-postgres pg_dump -U postgres -d netflix-clone > netflix-clone-dump.sql
+
+Restore from backup:
+-cat netflix-clone-dump.sql | docker exec -i uni-postgres psql -U postgres -d netflix-clone
+
 
 📌 Notes
 Both apps need to be running for the clone to function properly.
+Database schema + data can be restored from the provided netflix-clone-dump.sql.
+
 
 For further assistance, refer to Ameli Fernando & Polina Zueva.
